@@ -10,6 +10,7 @@ export default async function handler(req, res) {
         submit_type: "pay",
         mode: "payment",
         payment_method_types: ["card"],
+        automatic_payment_methods : true,
         billing_address_collection: "auto",
         shipping_options: [{ shipping_rate: "shr_1LPmQZSG7KneWlvmL92ILvl4" }],
         line_items: req.body.map((item) => {
