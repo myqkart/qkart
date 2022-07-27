@@ -163,7 +163,7 @@ const Cart = () => {
                             className="btn btn-secondary"
                             onClick={() => toast.dismiss(t.id)}
                           >
-                            Dismiss
+                            Cancel
                           </button>
                         </div>
                         <div className="col-auto">
