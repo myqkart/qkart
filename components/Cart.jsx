@@ -11,6 +11,8 @@ import toast from "react-hot-toast";
 
 import { useStateContext } from "../context/StateContext";
 import { urlFor } from "../lib/client";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
 // import getStripe from "../lib/getStripe";
 
 const Cart = () => {
@@ -46,7 +48,148 @@ const Cart = () => {
   //   stripe.redirectToCheckout({ sessionId: data.id });
   // };
 
-  const displayRazorPay = async () => {
+  const initialValues = {
+    add1: "",
+    add2: "",
+    city: "",
+    state: "",
+    pinCode: "",
+  };
+  const onSubmit = (t) => {
+    displayRazorPay(t);
+  };
+
+  const validator = (values) => {
+    const errors = {};
+    if (!values.add1) errors.add1 = "Address required.";
+    else if (!values.city) errors.city = "City required.";
+    else if (!values.state) errors.state = "State required.";
+    else if (!values.pinCode) errors.pinCode = "Pincode required.";
+
+    return errors;
+  };
+
+  const addressStep = () => {
+    toast(
+      (t) => (
+        <span>
+          <div>
+            <h3>Your Address</h3>
+            <div className="col-lg-12 login-form">
+              <Formik
+                initialValues={initialValues}
+                validate={validator}
+                onSubmit={() => onSubmit(t)}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="add1"
+                        className="form-control login-input"
+                        placeholder="Address line 1"
+                      />
+                      <ErrorMessage
+                        name="add1"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+                    <br />
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="add2"
+                        className="form-control login-input"
+                        placeholder="Address line 2"
+                      />
+                      <ErrorMessage
+                        name="add2"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+                    <br />
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="city"
+                        className="form-control login-input"
+                        placeholder="City"
+                      />
+                      <ErrorMessage
+                        name="city"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+
+                    <br />
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="state"
+                        className="form-control login-input"
+                        placeholder="State"
+                      />
+                      <ErrorMessage
+                        name="state"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+
+                    <br />
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="pinCode"
+                        className="form-control login-input"
+                        placeholder="Pincode"
+                      />
+                      <ErrorMessage
+                        name="pinCode"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+
+                    <div className="col-lg-12 loginbttm">
+                      <div className="row login-btm login-button">
+                        <div className="col-auto">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => toast.dismiss(t.id)}
+                          >
+                            Dismiss
+                          </button>
+                        </div>
+                        <div className="col-auto">
+                          <button
+                            type="submit"
+                            className="btn btn-sm"
+                            disabled={isSubmitting}
+                          >
+                            Order
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
+        </span>
+      ),
+      { duration: Infinity, position: "bottom-center" }
+    );
+  };
+
+  const displayRazorPay = async (t) => {
+    toast.dismiss(t.id);
     toast.loading("Redirecting...");
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
@@ -59,10 +202,10 @@ const Cart = () => {
     const resData = await fetch("/api/razorpay", {
       method: "POST",
       body: JSON.stringify({ totalPrice }),
-    })
+    });
 
-    const data = await resData.json()
-    console.log('data : ', data);
+    const data = await resData.json();
+    console.log("data : ", data);
 
     toast.dismiss();
     const options = {
@@ -169,7 +312,7 @@ const Cart = () => {
               <h3>₹{totalPrice}</h3>
             </div>
             <div className="btn-container">
-              <button type="button" className="btn" onClick={displayRazorPay}>
+              <button type="button" className="btn" onClick={addressStep}>
                 PAY VIA CARD/OTHERS
               </button>
             </div>
