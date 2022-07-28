@@ -29,8 +29,6 @@ const HeroBanner = ({ heroBanner }) => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    console.log("timeLeft : ", timeLeft);
-    // console.log('timer : ', timer);
     return () => clearTimeout(timer);
   });
 
