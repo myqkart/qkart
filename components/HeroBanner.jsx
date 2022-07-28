@@ -1,36 +1,34 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { urlFor } from "../lib/client";
 
-const calculateTimeLeft = () => {
+const utcToGmt = 19800000;
+
+const tomorrowDate = () => {
   const tomorrow = new Date();
-  tomorrow.setDate(new Date().getDate() + 1);
-  let difference = +new Date("07/29/2022") - new Date();
-
-  let timeLeft = {};
-
-  if (difference > 0) {
-    timeLeft = {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
-    };
-  }
-
-  return timeLeft;
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.toISOString();
+  const newDate = JSON.stringify(new Date(tomorrow)).slice(1, 11);
+  return newDate;
 };
 
 const HeroBanner = ({ heroBanner }) => {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const initDifference = +new Date(tomorrowDate()) - +new Date() - utcToGmt;
+  const [timeLeft, setTimeLeft] = useState({});
+  const [difference, setDifference] = useState(initDifference);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      }
+      setDifference(initDifference);
     }, 1000);
 
-    console.log("timeLeft : ", timeLeft);
-    // console.log('timer : ', timer);
     return () => clearTimeout(timer);
   });
 
@@ -46,18 +44,23 @@ const HeroBanner = ({ heroBanner }) => {
           className="hero-banner-image"
         />
         <div>
-          <Link href="/">
-            <button type="button">
-              {timeLeft.days +
-                "D : " +
-                timeLeft.hours +
-                "H : " +
-                timeLeft.minutes +
-                "M : " +
-                timeLeft.seconds +
-                "S"}
-            </button>
-          </Link>
+          <div>
+            {Object.keys(timeLeft).length !== 0 ? (
+              <p className="btn">
+                {timeLeft?.days +
+                  "D : " +
+                  timeLeft?.hours +
+                  "H : " +
+                  timeLeft?.minutes +
+                  "M : " +
+                  timeLeft?.seconds +
+                  "S"}
+              </p>
+            ) : (
+              <p className="btn">Shop Now</p>
+            )}
+            {/* <p>aiwejfoasnfv</p> */}
+          </div>
           <div className="desc">
             <h5>Description</h5>
             <p>{heroBanner.desc}</p>
