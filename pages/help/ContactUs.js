@@ -25,6 +25,8 @@ const ContactUs = () => {
       },
       body: JSON.stringify(values),
     });
+    
+    console.log('res : ', res)
 
     if (res.status === 200) {
       setShowSuceess(true);

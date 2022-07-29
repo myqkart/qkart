@@ -18,7 +18,7 @@ export default function (req, res) {
   };
 
   transporter.sendMail(mailData, function (err, info) {
-    if (err) res.json({ message: "Internal server error." });
+    if (err) res.json({ message: 'Internal server error', err });
     else res.json({ status: 200 });
   });
 }
