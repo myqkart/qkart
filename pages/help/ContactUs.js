@@ -80,7 +80,7 @@ const ContactUs = () => {
                     </h1>
                     <p>
                       Any queries or feedback? Just write us a message, and
-                      we'll get back to you.
+                      we will get back to you.
                     </p>
                     <div className="reviews row">
                       <AiOutlineMail
