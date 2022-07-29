@@ -1,5 +1,6 @@
 import React from "react";
 import { useStateContext } from "../../context/StateContext";
+import { toast } from "react-hot-toast";
 
 import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -27,6 +28,10 @@ const ContactUs = () => {
 
     if (res.status === 200) {
       setShowSuceess(true);
+    }
+
+    if (res.message) {
+      toast(res.message);
     }
   };
 
