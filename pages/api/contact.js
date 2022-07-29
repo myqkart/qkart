@@ -17,7 +17,8 @@ export default function (req, res) {
     html: `<div>${req.body.message}</div>`,
   };
 
-  transporter.sendMail(mailData);
-
-  return res.json({ status: true });
+  transporter.sendMail(mailData, function (err, info) {
+    if (err) console.log(err);
+    else res.json({ status: 200 });
+  });
 }
