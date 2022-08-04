@@ -54,7 +54,6 @@ const ProductDetails = ({ product, products }) => {
               <AiFillStar />
               <AiFillStar />
               <AiOutlineStar />
-            <p className="text-danger">Only {onlyLeft} left.</p>
             </div>
           </div>
           <h4>Details :</h4>
