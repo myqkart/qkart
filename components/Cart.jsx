@@ -1,5 +1,9 @@
 import React, { useRef } from "react";
 import Link from "next/link";
+import Head from "next/head";
+import Script from "next/script";
+const shortid = require("shortid");
+
 import {
   AiOutlineMinus,
   AiOutlinePlus,
@@ -57,7 +61,8 @@ const Cart = () => {
     pinCode: "",
   };
   const onSubmit = (t) => {
-    displayRazorPay(t);
+    // displayRazorPay(t);
+    handlePaytm(t);
   };
 
   const validator = (values) => {
@@ -80,7 +85,7 @@ const Cart = () => {
               <Formik
                 initialValues={initialValues}
                 validate={validator}
-                onSubmit={() => handleCheckout(t)}
+                onSubmit={() => handlePaytm(t)}
               >
                 {({ isSubmitting }) => (
                   <Form>
@@ -230,8 +235,59 @@ const Cart = () => {
   //   paymentObject.open();
   // };
 
+  const handlePaytm = async (t) => {
+    toast.dismiss(t.id);
+    toast.loading("Redirecting...");
+
+    let oid = shortid.generate() + shortid.generate();
+
+    const res = await fetch("/api/paytm", {
+      method: "POST",
+      body: JSON.stringify({ totalPrice, oid }),
+    });
+    let txntoken = await res.json();
+    txntoken = JSON.parse(txntoken).body.txnToken;
+    toast.dismiss();
+    var config = {
+      root: "",
+      flow: "DEFAULT",
+      data: {
+        orderId: oid /* update order id */,
+        token: txntoken /* update token value */,
+        tokenType: "TXN_TOKEN",
+        amount: totalPrice /* update amount */,
+      },
+      handler: {
+        notifyMerchant: function (eventName, data) {
+          toast("Order recorded");
+        },
+      },
+    };
+
+    window.Paytm.CheckoutJS.init(config)
+      .then(function onSuccess() {
+        // after successfully updating configuration, invoke JS Checkout
+        window.Paytm.CheckoutJS.invoke();
+      })
+      .catch(function onError(error) {
+        console.log("error => ", error);
+      });
+  };
+
   return (
     <div className="cart-wrapper" ref={cartRef}>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
+        />
+      </Head>
+      <Script
+        type="application/javascript"
+        crossorigin="anonymous"
+        src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
+      />
+
       <div className="cart-container">
         <button
           type="button"
