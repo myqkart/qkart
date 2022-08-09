@@ -1,9 +1,5 @@
 import React, { useRef } from "react";
 import Link from "next/link";
-import Head from "next/head";
-import Script from "next/script";
-const shortid = require("shortid");
-
 import {
   AiOutlineMinus,
   AiOutlinePlus,
@@ -60,10 +56,6 @@ const Cart = () => {
     state: "",
     pinCode: "",
   };
-  const onSubmit = (t) => {
-    // displayRazorPay(t);
-    handlePaytm(t);
-  };
 
   const validator = (values) => {
     const errors = {};
@@ -85,7 +77,7 @@ const Cart = () => {
               <Formik
                 initialValues={initialValues}
                 validate={validator}
-                onSubmit={() => handlePaytm(t)}
+                onSubmit={() => handleCheckout(t)}
               >
                 {({ isSubmitting }) => (
                   <Form>
@@ -194,100 +186,8 @@ const Cart = () => {
     );
   };
 
-  // const displayRazorPay = async (t) => {
-  //   toast.dismiss(t.id);
-  //   toast.loading("Redirecting...");
-  //   const res = await loadScript(
-  //     "https://checkout.razorpay.com/v1/checkout.js"
-  //   );
-  //   if (!res) {
-  //     toast.error("Razorpay failed to load.");
-  //     return;
-  //   }
-
-  //   const resData = await fetch("/api/razorpay", {
-  //     method: "POST",
-  //     body: JSON.stringify({ totalPrice }),
-  //   });
-
-  //   const data = await resData.json();
-  //   console.log("data : ", data);
-
-  //   toast.dismiss();
-  //   const options = {
-  //     key: process.env.NEXT_PUBLIC_RAZORPAY_LIVE_KEY,
-  //     amount: data.amount.toString(),
-  //     currency: data.currency,
-  //     name: "Q-Kart",
-  //     description: "Thanks for shopping.",
-  //     image: "https://qkart.vercel.app/favicon.ico",
-  //     order_id: data.id,
-  //     handler: function (response) {
-  //       setCartItems([]);
-  //       toast.success("Your order received successfully.");
-  //     },
-  //     prefill: {
-  //       name: "Q-Ka",
-  //     },
-  //   };
-
-  //   const paymentObject = new window.Razorpay(options);
-  //   paymentObject.open();
-  // };
-
-  const handlePaytm = async (t) => {
-    toast.dismiss(t.id);
-    toast.loading("Redirecting...");
-
-    let oid = shortid.generate() + shortid.generate();
-
-    const res = await fetch("/api/paytm", {
-      method: "POST",
-      body: JSON.stringify({ totalPrice, oid }),
-    });
-    let txntoken = await res.json();
-    txntoken = JSON.parse(txntoken).body.txnToken;
-    toast.dismiss();
-    var config = {
-      root: "",
-      flow: "DEFAULT",
-      data: {
-        orderId: oid /* update order id */,
-        token: txntoken /* update token value */,
-        tokenType: "TXN_TOKEN",
-        amount: totalPrice /* update amount */,
-      },
-      handler: {
-        notifyMerchant: function (eventName, data) {
-          toast("Order recorded");
-        },
-      },
-    };
-
-    window.Paytm.CheckoutJS.init(config)
-      .then(function onSuccess() {
-        // after successfully updating configuration, invoke JS Checkout
-        window.Paytm.CheckoutJS.invoke();
-      })
-      .catch(function onError(error) {
-        console.log("error => ", error);
-      });
-  };
-
   return (
     <div className="cart-wrapper" ref={cartRef}>
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
-        />
-      </Head>
-      <Script
-        type="application/javascript"
-        crossorigin="anonymous"
-        src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
-      />
-
       <div className="cart-container">
         <button
           type="button"
