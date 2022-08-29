@@ -25,7 +25,7 @@ const ProductDetails = ({ product, products }) => {
 
   return (
     <div>
-      <MetaDecorator title={product.metaTitle} description={product.metaDesc} />
+      {/* <MetaDecorator title={product.metaTitle} description={product.metaDesc} /> */}
       <div className="product-detail-container">
         <div>
           <div className="image-container">
