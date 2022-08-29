@@ -42,9 +42,14 @@ export default {
       type: "string",
     },
     {
-      name: "onlyLeft",
-      title: "Only left",
-      type: "number",
+      name: "metaTitle",
+      title: "Meta title",
+      type: "string",
+    },
+    {
+      name: "metaDesc",
+      title: "Meta desc",
+      type: "string",
     },
   ],
 };

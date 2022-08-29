@@ -9,6 +9,7 @@ import {
 
 import { Product } from "../../components";
 import { useStateContext } from "../../context/StateContext";
+import MetaDecorator from "../../components/MetaDecorator";
 
 const ProductDetails = ({ product, products }) => {
   const { name, image, details, price, realPrice, onlyLeft } = product;
@@ -24,6 +25,7 @@ const ProductDetails = ({ product, products }) => {
 
   return (
     <div>
+      <MetaDecorator title={product.metaTitle} description={product.metaDesc} />
       <div className="product-detail-container">
         <div>
           <div className="image-container">
