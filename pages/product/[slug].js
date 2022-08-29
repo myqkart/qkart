@@ -56,7 +56,6 @@ const ProductDetails = ({ product, products }) => {
               <AiFillStar />
               <AiFillStar />
               <AiOutlineStar />
-            <p className="text-danger">Only {onlyLeft} left.</p>
             </div>
           </div>
           <h4>Details :</h4>
@@ -67,7 +66,7 @@ const ProductDetails = ({ product, products }) => {
               <s style={{ color: "grey" }}>₹{realPrice}</s>
             </small>
           </p>
-          <p className="text-danger">Offer : 50% Cashback</p>
+          <p className="text-danger">50% Cashback on Credit Card</p>
 
           <div className="quantity">
             <h3>Quantity:</h3>

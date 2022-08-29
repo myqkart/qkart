@@ -56,9 +56,6 @@ const Cart = () => {
     state: "",
     pinCode: "",
   };
-  const onSubmit = (t) => {
-    displayRazorPay(t);
-  };
 
   const validator = (values) => {
     const errors = {};
@@ -188,47 +185,6 @@ const Cart = () => {
       { duration: Infinity, position: "bottom-center" }
     );
   };
-
-  // const displayRazorPay = async (t) => {
-  //   toast.dismiss(t.id);
-  //   toast.loading("Redirecting...");
-  //   const res = await loadScript(
-  //     "https://checkout.razorpay.com/v1/checkout.js"
-  //   );
-  //   if (!res) {
-  //     toast.error("Razorpay failed to load.");
-  //     return;
-  //   }
-
-  //   const resData = await fetch("/api/razorpay", {
-  //     method: "POST",
-  //     body: JSON.stringify({ totalPrice }),
-  //   });
-
-  //   const data = await resData.json();
-  //   console.log("data : ", data);
-
-  //   toast.dismiss();
-  //   const options = {
-  //     key: process.env.NEXT_PUBLIC_RAZORPAY_LIVE_KEY,
-  //     amount: data.amount.toString(),
-  //     currency: data.currency,
-  //     name: "Q-Kart",
-  //     description: "Thanks for shopping.",
-  //     image: "https://qkart.vercel.app/favicon.ico",
-  //     order_id: data.id,
-  //     handler: function (response) {
-  //       setCartItems([]);
-  //       toast.success("Your order received successfully.");
-  //     },
-  //     prefill: {
-  //       name: "Q-Ka",
-  //     },
-  //   };
-
-  //   const paymentObject = new window.Razorpay(options);
-  //   paymentObject.open();
-  // };
 
   return (
     <div className="cart-wrapper" ref={cartRef}>
