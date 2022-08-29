@@ -9,10 +9,10 @@ import {
 
 import { Product } from "../../components";
 import { useStateContext } from "../../context/StateContext";
-import MetaDecorator from "../../components/MetaDecorator";
+import Head from "next/head";
 
 const ProductDetails = ({ product, products }) => {
-  const { name, image, details, price, realPrice, onlyLeft } = product;
+  const { name, image, details, price, realPrice, metaTitle, metaDesc } = product;
 
   const [index, setIndex] = useState(0);
   const { incQty, decQty, qty, onAdd, setShowCart } = useStateContext();
@@ -25,7 +25,12 @@ const ProductDetails = ({ product, products }) => {
 
   return (
     <div>
-      <MetaDecorator title={product.metaTitle} description={product.metaDesc} name={name} />
+      <Head>
+        <title>{name}</title>
+        <meta property="og:title" content={name} />
+        <meta property="description" content={metaDesc} />
+        <meta property="og:description" content={metaDesc} />
+      </Head>
       <div className="product-detail-container">
         <div>
           <div className="image-container">
