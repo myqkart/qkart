@@ -7,9 +7,9 @@ import { Helmet } from "react-helmet";
 const Layout = ({ children }) => {
   return (
     <div className="layout">
-      <Helmat>
+      <Helmet>
         <meta name="title" content="Q-Kart"></meta>
-      </Helmat>
+      </Helmet>
       <header>
         <Navbar />
       </header>
