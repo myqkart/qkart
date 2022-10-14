@@ -35,13 +35,12 @@ const Cart = () => {
     toast.dismiss(t.id);
     const stripe = await getStripe();
 
-    console.log('cartItems : ',cartItems);
     const response = await fetch("/api/stripe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: [JSON.stringify(cartItems), payOnDel],
+      body: JSON.stringify([cartItems, payOnDel]),
     });
 
     if (response.statusCode === 500) return;
