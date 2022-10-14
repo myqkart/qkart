@@ -35,12 +35,13 @@ const Cart = () => {
     toast.dismiss(t.id);
     const stripe = await getStripe();
 
+    console.log('cartItems : ',cartItems);
     const response = await fetch("/api/stripe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(cartItems),
+      body: [JSON.stringify(cartItems), payOnDel],
     });
 
     if (response.statusCode === 500) return;
@@ -275,11 +276,6 @@ const Cart = () => {
           <div>
             <input type="checkbox" id="payOnDel" onClick={OnPayOnDelChange} />
             <label className="p-2" htmlFor="payOnDel">Pay on delivery *</label>
-            <div>
-              {
-                payOnDel ? <p> True</p> : <p>False</p>
-              }
-            </div>
           </div>
           <p className="cart-num-items">
             <small>Pay on delivery has policy of 50% online payment.</small>
