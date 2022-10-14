@@ -58,11 +58,15 @@ const Cart = () => {
     city: "",
     state: "",
     pinCode: "",
+    fullName: "",
+    mobile: ""
   };
 
   const validator = (values) => {
     const errors = {};
-    if (!values.add1) errors.add1 = "Address required.";
+    if (!values.fullName) errors.fullName = "Full name required.";
+    else if (!values.mobile) errors.mobile = "Mobile number required.";
+    else if (!values.add1) errors.add1 = "Address required.";
     else if (!values.city) errors.city = "City required.";
     else if (!values.state) errors.state = "State required.";
     else if (!values.pinCode) errors.pinCode = "Pincode required.";
@@ -84,6 +88,34 @@ const Cart = () => {
               >
                 {({ isSubmitting }) => (
                   <Form>
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="fullName"
+                        className="form-control login-input"
+                        placeholder="Full name"
+                      />
+                      <ErrorMessage
+                        name="fullName"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+                    <br />
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="mobile"
+                        className="form-control login-input"
+                        placeholder="Mobile number"
+                      />
+                      <ErrorMessage
+                        name="mobile"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+                    <br />
                     <div className="form-group">
                       <Field
                         type="text"
