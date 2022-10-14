@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import {
   AiOutlineMinus,
@@ -24,9 +24,12 @@ const Cart = () => {
     setShowCart,
     toggleCartItemQuanitity,
     onRemove,
+    setTotalPrice,
     loadScript,
     setCartItems,
   } = useStateContext();
+
+  const [payOnDel, SetPayOnDel] = useState(false)
 
   const handleCheckout = async (t) => {
     toast.dismiss(t.id);
@@ -186,6 +189,12 @@ const Cart = () => {
     );
   };
 
+  const OnPayOnDelChange = () => {
+    SetPayOnDel(!payOnDel)
+    if (payOnDel) setTotalPrice(totalPrice*2)
+    else setTotalPrice(totalPrice/2)
+  }
+
   return (
     <div className="cart-wrapper" ref={cartRef}>
       <div className="cart-container">
@@ -261,6 +270,20 @@ const Cart = () => {
                 </div>
               </div>
             ))}
+        </div><hr />
+        <div className="p-3">
+          <div>
+            <input type="checkbox" id="payOnDel" onClick={OnPayOnDelChange} />
+            <label className="p-2" htmlFor="payOnDel">Pay on delivery *</label>
+            <div>
+              {
+                payOnDel ? <p> True</p> : <p>False</p>
+              }
+            </div>
+          </div>
+          <p className="cart-num-items">
+            <small>Pay on delivery has policy of 50% online payment.</small>
+          </p>
         </div>
         {cartItems.length >= 1 && (
           <div className="cart-bottom">
