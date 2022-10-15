@@ -26,10 +26,8 @@ const Cart = () => {
     onRemove,
     setTotalPrice,
     loadScript,
-    setCartItems,
+    setCartItems, payOnDel, SetPayOnDel
   } = useStateContext();
-
-  const [payOnDel, SetPayOnDel] = useState(false)
 
   const handleCheckout = async (t) => {
     toast.dismiss(t.id);
@@ -305,7 +303,7 @@ const Cart = () => {
         </div><hr />
         <div className="p-3">
           <div>
-            <input type="checkbox" id="payOnDel" onClick={OnPayOnDelChange} />
+            <input type="checkbox" id="payOnDel" checked={payOnDel ? true : false} onClick={OnPayOnDelChange} />
             <label className="p-2" htmlFor="payOnDel">Pay on delivery *</label>
           </div>
           <p className="cart-num-items">
