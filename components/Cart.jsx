@@ -26,10 +26,8 @@ const Cart = () => {
     onRemove,
     setTotalPrice,
     loadScript,
-    setCartItems,
+    setCartItems, payOnDel, SetPayOnDel
   } = useStateContext();
-
-  const [payOnDel, SetPayOnDel] = useState(false)
 
   const handleCheckout = async (t) => {
     toast.dismiss(t.id);
@@ -305,11 +303,11 @@ const Cart = () => {
         </div><hr />
         <div className="p-3">
           <div>
-            <input type="checkbox" id="payOnDel" onClick={OnPayOnDelChange} />
+            <input type="checkbox" id="payOnDel" checked={payOnDel ? true : false} onClick={OnPayOnDelChange} disabled={totalPrice < 1999 ? true : false} />
             <label className="p-2" htmlFor="payOnDel">Pay on delivery *</label>
           </div>
           <p className="cart-num-items">
-            <small>Pay on delivery has policy of 50% online payment.</small>
+            <small>Not applicable for amount less than 1999 and has policy of 50% online payment.</small>
           </p>
         </div>
         {cartItems.length >= 1 && (
@@ -320,7 +318,7 @@ const Cart = () => {
             </div>
             <div className="btn-container">
               <button type="button" className="btn" onClick={addressStep}>
-                PAY VIA CARD/OTHERS
+                Proceed to address
               </button>
             </div>
           </div>
