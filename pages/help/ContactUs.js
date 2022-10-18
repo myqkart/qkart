@@ -73,8 +73,8 @@ const ContactUs = () => {
           <section className="tech-sec contact-us-pg">
             <div className="container">
               <div className="frm-sec">
-                <div className="d-flex">
-                  <div className="col">
+                <div className="row">
+                  <div className="col-auto">
                     <h1>
                       Contact <span>Us</span>
                     </h1>
@@ -88,7 +88,7 @@ const ContactUs = () => {
                         style={{ fontSize: "30px" }}
                       />
                       <a href="mailto:yourshop674@gmail.com" className="col">
-                        yshop674@gmail.com
+                        qkart.vercel.app@gmail.com
                       </a>
                     </div>
                     {/* <div className="reviews row">
@@ -101,7 +101,9 @@ const ContactUs = () => {
                       </a>
                     </div> */}
                   </div>
-                  <div className="card col-4">
+                  <div className="col-auto p-3">
+
+                  <div className="card">
                     <div className="p-3">
                       <Formik
                         initialValues={initialValues}
@@ -181,6 +183,7 @@ const ContactUs = () => {
                       </Formik>
                     </div>
                   </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -192,8 +195,8 @@ const ContactUs = () => {
                 Our <span>Location</span>
               </h2>
               <p>
-                <b style={{ fontWeight: "600" }}>India</b> <br />
-                Jodhpur, Rajasthan 342006
+                <b style={{ fontWeight: "600" }}>Canada</b> <br />
+                1563 Hastings Street, Vancouver, British Columbia, V6C 1B4
               </p>
             </div>
           </section>
