@@ -64,7 +64,8 @@ const ProductDetails = ({ product, products }) => {
             </div>
           </div>
           <h4>Details :</h4>
-          <p>{details}</p>
+          {/* <p>{details}</p> */}
+          <div className="desc-div" style={{textAlign: 'justify', width: '100%'}} dangerouslySetInnerHTML={{ __html: `${details}` }}></div>
           <p className="price">
             ₹{price} &ensp;
             <small>

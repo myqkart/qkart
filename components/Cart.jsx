@@ -61,13 +61,14 @@ const Cart = () => {
   };
 
   const validator = (values) => {
-    const errors = {};
-    if (!values.fullName) errors.fullName = "Full name required.";
-    else if (!values.mobile) errors.mobile = "Mobile number required.";
-    else if (!values.add1) errors.add1 = "Address required.";
-    else if (!values.city) errors.city = "City required.";
-    else if (!values.state) errors.state = "State required.";
-    else if (!values.pinCode) errors.pinCode = "Pincode required.";
+    const errors = {
+      fullName: onlyChars(values, 'fullName'),
+      mobile: mobileFormat(values),
+      add1: alphaNumericValidator(values),
+      city: onlyChars(values, 'city'),
+      state: onlyChars(values, 'state'),
+      pinCode: onlyNumber(values),
+    };
 
     return errors;
   };
@@ -219,12 +220,6 @@ const Cart = () => {
     );
   };
 
-  const OnPayOnDelChange = () => {
-    SetPayOnDel(!payOnDel)
-    if (payOnDel) setTotalPrice(totalPrice*2)
-    else setTotalPrice(totalPrice/2)
-  }
-
   return (
     <div className="cart-wrapper" ref={cartRef}>
       <div className="cart-container">
@@ -301,15 +296,6 @@ const Cart = () => {
               </div>
             ))}
         </div><hr />
-        <div className="p-3">
-          <div>
-            <input type="checkbox" id="payOnDel" checked={payOnDel ? true : false} onClick={OnPayOnDelChange} />
-            <label className="p-2" htmlFor="payOnDel">Pay on delivery *</label>
-          </div>
-          <p className="cart-num-items">
-            <small>Pay on delivery has policy of 50% online payment.</small>
-          </p>
-        </div>
         {cartItems.length >= 1 && (
           <div className="cart-bottom">
             <div className="total">
@@ -327,5 +313,47 @@ const Cart = () => {
     </div>
   );
 };
+
+// validators
+const onlyChars = (control, key) => {
+  const error_key = key === 'fullName' ? 'Full name'  :
+   key === 'city' ? 'City' : 'State';
+  if (control[key]) {
+    if (control[key].toString().match(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)) {
+      return null;
+    }
+    return `Invalid ${error_key.toLowerCase()}.`;
+  }
+  return `${error_key} required.`;
+}
+
+const onlyNumber = control => {
+  if (control.pinCode) {
+    if (control.pinCode.toString().match(/^[0-9]{6}$/)) {
+      return null;
+    }
+    return "Invalid pincode.";
+  }
+  return "Pincode required.";
+}
+
+const mobileFormat = control => {
+  if (control.mobile) {
+    if (control.mobile.match(/^[0-9]{10}$/)) {
+      return null;
+    }
+    return "Invalid mobile number.";
+  }
+  return "Mobile number required.";
+}
+
+const alphaNumericValidator = control => {
+  if (control.add1) {
+    if (control.add1.match(/^[a-z A-Z0-9_]*$/)) return null;
+    return "Invalid address";
+  }
+  return "Address required.";
+}
+
 
 export default Cart;
