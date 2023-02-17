@@ -487,6 +487,7 @@ padding: 30px 65px;
   gap: 20px;
   margin-top: 10px ;
   align-items: center;
+  width: 100%;
 }
 .product-detail-desc .buttons{
   display: flex;
