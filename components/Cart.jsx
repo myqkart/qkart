@@ -70,7 +70,9 @@ const Cart = () => {
       pinCode: onlyNumber(values),
     };
 
-    return errors;
+    const finalError = {}
+    Object.keys(errors).map((key) => errors[key] ? finalError[key] = errors[key] : false)
+    return finalError;
   };
 
   const addressStep = () => {
