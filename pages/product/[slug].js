@@ -9,9 +9,10 @@ import {
 
 import { Product } from "../../components";
 import { useStateContext } from "../../context/StateContext";
+import Head from "next/head";
 
 const ProductDetails = ({ product, products }) => {
-  const { name, image, details, price, realPrice, onlyLeft } = product;
+  const { name, image, details, price, realPrice, metaTitle, metaDesc } = product;
 
   const [index, setIndex] = useState(0);
   const { incQty, decQty, qty, onAdd, setShowCart } = useStateContext();
@@ -24,6 +25,12 @@ const ProductDetails = ({ product, products }) => {
 
   return (
     <div>
+      <Head>
+        <title>{name}</title>
+        <meta property="og:title" content={name} />
+        <meta property="description" content={metaDesc} />
+        <meta property="og:description" content={metaDesc} />
+      </Head>
       <div className="product-detail-container">
         <div>
           <div className="image-container">
@@ -54,18 +61,18 @@ const ProductDetails = ({ product, products }) => {
               <AiFillStar />
               <AiFillStar />
               <AiOutlineStar />
-            <p className="text-danger">Only {onlyLeft} left.</p>
             </div>
           </div>
           <h4>Details :</h4>
-          <p>{details}</p>
+          {/* <p>{details}</p> */}
+          <div className="desc-div" style={{textAlign: 'justify', width: '100%'}} dangerouslySetInnerHTML={{ __html: `${details}` }}></div>
           <p className="price">
             ₹{price} &ensp;
             <small>
               <s style={{ color: "grey" }}>₹{realPrice}</s>
             </small>
           </p>
-          <p className="text-danger">Offer : 50% Cashback</p>
+          {/* <p className="text-danger">50% Cashback on Credit Card</p> */}
 
           <div className="quantity">
             <h3>Quantity:</h3>

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/core": "^7.19.3",
     "@babel/preset-react": "^7.18.6",
     "@sanity/client": "^3.3.2",
     "@sanity/image-url": "^1.0.1",
@@ -23,6 +24,7 @@
     "razorpay": "^2.8.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-helmet": "^6.1.0",
     "react-hot-toast": "^2.3.0",
     "react-icons": "^4.4.0",
     "shortid": "^2.2.16",

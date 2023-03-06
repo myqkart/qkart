@@ -10,6 +10,7 @@ export const StateContext = ({ children }) => {
   const [totalQuantities, setTotalQuantities] = useState(0);
   const [qty, setQty] = useState(1);
   const [showSuceess, setShowSuceess] = useState(false)
+  const [payOnDel, SetPayOnDel] = useState(false)
 
   let foundProduct;
   let index;
@@ -127,7 +128,7 @@ export const StateContext = ({ children }) => {
         setTotalPrice,
         setTotalQuantities,
         loadScript,
-        showSuceess, setShowSuceess
+        showSuceess, setShowSuceess, payOnDel, SetPayOnDel
       }}
     >
       {children}

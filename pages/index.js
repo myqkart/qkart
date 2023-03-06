@@ -7,8 +7,8 @@ const Home = ({products, bannerData}) => {
     <div>
       <HeroBanner heroBanner ={bannerData.length && bannerData[0]}/>
       <div className="products-heading">
-        <h2>BestSelling Products</h2>
-        <p>Speakers of many variations</p>
+        <h2>Best Selling Products</h2>
+        <p>Branded and refurbished both available</p>
       </div>
       <div className="products-container">
         {products?.map((prod) => <Product key={prod._id} product ={prod}/>)}
@@ -19,7 +19,7 @@ const Home = ({products, bannerData}) => {
 };
 
 export const getServerSideProps = async () => {
-  const query = '*[_type == "product"]';
+  const query = '*[_type == "product"] | order(_createdAt desc)';
   const products = await client.fetch(query);
 
   const query2 = '*[_type == "banner"]';

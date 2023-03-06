@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import {
   AiOutlineMinus,
@@ -24,8 +24,9 @@ const Cart = () => {
     setShowCart,
     toggleCartItemQuanitity,
     onRemove,
+    setTotalPrice,
     loadScript,
-    setCartItems,
+    setCartItems, payOnDel, SetPayOnDel
   } = useStateContext();
 
   const handleCheckout = async (t) => {
@@ -37,7 +38,7 @@ const Cart = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(cartItems),
+      body: JSON.stringify([cartItems, payOnDel]),
     });
 
     if (response.statusCode === 500) return;
@@ -55,16 +56,23 @@ const Cart = () => {
     city: "",
     state: "",
     pinCode: "",
+    fullName: "",
+    mobile: ""
   };
 
   const validator = (values) => {
-    const errors = {};
-    if (!values.add1) errors.add1 = "Address required.";
-    else if (!values.city) errors.city = "City required.";
-    else if (!values.state) errors.state = "State required.";
-    else if (!values.pinCode) errors.pinCode = "Pincode required.";
+    const errors = {
+      fullName: onlyChars(values, 'fullName'),
+      mobile: mobileFormat(values),
+      add1: alphaNumericValidator(values),
+      city: onlyChars(values, 'city'),
+      state: onlyChars(values, 'state'),
+      pinCode: onlyNumber(values),
+    };
 
-    return errors;
+    const finalError = {}
+    Object.keys(errors).map((key) => errors[key] ? finalError[key] = errors[key] : false)
+    return finalError;
   };
 
   const addressStep = () => {
@@ -81,6 +89,34 @@ const Cart = () => {
               >
                 {({ isSubmitting }) => (
                   <Form>
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="fullName"
+                        className="form-control login-input"
+                        placeholder="Full name"
+                      />
+                      <ErrorMessage
+                        name="fullName"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+                    <br />
+                    <div className="form-group">
+                      <Field
+                        type="text"
+                        name="mobile"
+                        className="form-control login-input"
+                        placeholder="Mobile number"
+                      />
+                      <ErrorMessage
+                        name="mobile"
+                        className="text-danger"
+                        component="div"
+                      />
+                    </div>
+                    <br />
                     <div className="form-group">
                       <Field
                         type="text"
@@ -261,7 +297,7 @@ const Cart = () => {
                 </div>
               </div>
             ))}
-        </div>
+        </div><hr />
         {cartItems.length >= 1 && (
           <div className="cart-bottom">
             <div className="total">
@@ -270,7 +306,7 @@ const Cart = () => {
             </div>
             <div className="btn-container">
               <button type="button" className="btn" onClick={addressStep}>
-                PAY VIA CARD/OTHERS
+                Proceed to address
               </button>
             </div>
           </div>
@@ -279,5 +315,47 @@ const Cart = () => {
     </div>
   );
 };
+
+// validators
+const onlyChars = (control, key) => {
+  const error_key = key === 'fullName' ? 'Full name'  :
+   key === 'city' ? 'City' : 'State';
+  if (control[key]) {
+    if (control[key].toString().match(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)) {
+      return null;
+    }
+    return `Invalid ${error_key.toLowerCase()}.`;
+  }
+  return `${error_key} required.`;
+}
+
+const onlyNumber = control => {
+  if (control.pinCode) {
+    if (control.pinCode.toString().match(/^[0-9]{6}$/)) {
+      return null;
+    }
+    return "Invalid pincode.";
+  }
+  return "Pincode required.";
+}
+
+const mobileFormat = control => {
+  if (control.mobile) {
+    if (control.mobile.match(/^[0-9]{10}$/)) {
+      return null;
+    }
+    return "Invalid mobile number.";
+  }
+  return "Mobile number required.";
+}
+
+const alphaNumericValidator = control => {
+  if (control.add1) {
+    if (control.add1.match(/^[a-z A-Z0-9_]*$/)) return null;
+    return "Invalid address";
+  }
+  return "Address required.";
+}
+
 
 export default Cart;
