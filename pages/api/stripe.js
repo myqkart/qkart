@@ -8,7 +8,8 @@ export default async function handler(req, res) {
       const params = {
         submit_type: "pay",
         mode: "payment",
-        payment_method_types: ['card', 'ideal', 'sofort', 'sepa_debit', 'p24', 'giropay', 'eps', 'alipay', 'grabpay', 'afterpay_clearpay', 'apple_pay', 'google_pay', 'microsoft_pay', 'wechat_pay', 'au_becs_debit', 'bacs_debit', 'fpx', 'oxxo', 'multibanco', 'boleto', 'klarna'],
+        payment_method_types: [ 'card', 'acss_debit', 'affirm', 'afterpay_clearpay', 'alipay', 'au_becs_debit', 'bacs_debit', 'bancontact', 'blik', 'boleto', 'cashapp', 'customer_balance', 'eps', 'fpx', 'giropay', 'grabpay', 'ideal', 'klarna',
+              'konbini', 'link', 'oxxo', 'p24', 'paynow', 'paypal', 'pix', 'promptpay', 'sepa_debit', 'sofort', 'us_bank_account', 'wechat_pay', 'zip',],
         billing_address_collection: "auto",
         shipping_options: [{ shipping_rate: "shr_1LPmQZSG7KneWlvmL92ILvl4" }],
         line_items: req.body[0].map((item) => {
